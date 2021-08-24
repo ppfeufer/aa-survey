@@ -33,17 +33,6 @@ class AaSurveyMenuItem(MenuItemHook):  # pylint: disable=too-few-public-methods
         """
 
         if request.user.has_perm("aa_survey.basic_access"):
-            # We might add a count of new messages at a later time
-            # app_count = AaForumManager.pending_requests_count_for_user(request.user)
-            # self.count = app_count if app_count and app_count > 0 else None
-
-            # count_unread_topics = unread_topics_count(request=request)
-            # self.count = (
-            #     count_unread_topics
-            #     if count_unread_topics and count_unread_topics > 0
-            #     else None
-            # )
-
             return MenuItemHook.render(self, request)
 
         return ""
