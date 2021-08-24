@@ -1,0 +1,69 @@
+"""
+Hook into AA
+"""
+
+from django.utils.translation import ugettext_lazy as _
+
+from allianceauth import hooks
+from allianceauth.services.hooks import MenuItemHook, UrlHook
+
+from aa_survey import __title__, urls
+
+
+class AaSurveyMenuItem(MenuItemHook):  # pylint: disable=too-few-public-methods
+    """
+    This class ensures only authorized users will see the menu entry
+    """
+
+    def __init__(self):
+        # Setup menu entry for sidebar
+        MenuItemHook.__init__(
+            self,
+            _(__title__),
+            "fas fa-poll-h fa-fw",
+            "aa_survey:dashboard",
+            navactive=["aa_survey:"],
+        )
+
+    def render(self, request):
+        """
+        Check if the user has the permission to view this app
+        :param request:
+        :return:
+        """
+
+        if request.user.has_perm("aa_survey.basic_access"):
+            # We might add a count of new messages at a later time
+            # app_count = AaForumManager.pending_requests_count_for_user(request.user)
+            # self.count = app_count if app_count and app_count > 0 else None
+
+            # count_unread_topics = unread_topics_count(request=request)
+            # self.count = (
+            #     count_unread_topics
+            #     if count_unread_topics and count_unread_topics > 0
+            #     else None
+            # )
+
+            return MenuItemHook.render(self, request)
+
+        return ""
+
+
+@hooks.register("menu_item_hook")
+def register_menu():
+    """
+    Register our menu item
+    :return:
+    """
+
+    return AaSurveyMenuItem()
+
+
+@hooks.register("url_hook")
+def register_urls():
+    """
+    Register our base url
+    :return:
+    """
+
+    return UrlHook(urls, "aa_survey", r"^survey/")
