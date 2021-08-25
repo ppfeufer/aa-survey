@@ -11,12 +11,19 @@ class TestIndexViews(TestCase):
     def setUpClass(cls) -> None:
         super().setUpClass()
 
-        cls.user_1001 = create_fake_user(
+        # User cannot access forum
+        cls.user_1001 = create_fake_user(1002, "Peter Parker")
+
+        # User can access forum
+        cls.user_1002 = create_fake_user(
             1001, "Bruce Wayne", permissions=["aa_survey.basic_access"]
         )
 
-        cls.user_1002 = create_fake_user(
-            1002, "Peter Parker", permissions=["aa_survey.basic_access"]
+        # User can manage forum
+        cls.user_1003 = create_fake_user(
+            1003,
+            "Clark Kent",
+            permissions=["aa_survey.basic_access", "aa_survey.manage_survey"],
         )
 
     # def setUp(self) -> None:
@@ -49,8 +56,10 @@ class TestIndexViews(TestCase):
 
     def test_should_show_dashboard(self):
         # given
-        self.client.force_login(self.user_1001)
+        self.client.force_login(self.user_1002)
+
         # when
         res = self.client.get(reverse("aa_survey:dashboard"))
+
         # then
         self.assertEqual(res.status_code, 200)
