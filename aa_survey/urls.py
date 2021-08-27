@@ -9,5 +9,5 @@ from aa_survey import views
 app_name: str = "aa_survey"
 
 urlpatterns = [
-    path("", views.index, name="dashboard"),
+    path("", views.dashboard, name="dashboard"),
 ]

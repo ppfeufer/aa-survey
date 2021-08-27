@@ -26,7 +26,7 @@ def check_for_main_character(user):
 @login_required
 @user_passes_test(check_for_main_character)
 @permission_required("aa_survey.basic_access")
-def index(request: WSGIRequest, form_id=None) -> HttpResponse:
+def dashboard(request: WSGIRequest, form_id=None) -> HttpResponse:
     """
     Survey Dashboard view
 
