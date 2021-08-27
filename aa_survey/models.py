@@ -78,7 +78,13 @@ class SurveyForm(models.Model):
 
     questions = SortedManyToManyField(SurveyQuestion)
     name = models.CharField(
-        max_length=254, blank=True, null=True, verbose_name="Survey Name"
+        max_length=254, blank=False, null=False, verbose_name="Survey Name"
+    )
+    description = models.TextField(
+        blank=False,
+        null=False,
+        verbose_name="Survey Description",
+        help_text="Quick description what this survey is for ...",
     )
     is_active = models.BooleanField(default=True)
 

@@ -1,0 +1,11 @@
+{% load i18n %}
+
+{% if available_surveys %}
+    {% for survey in available_surveys %}
+        {{ survey.1 }}
+    {% endfor %}
+{% else %}
+    <p>
+        {% translate "No surveys available at the moment." %}
+    </p>
+{% endif %}
