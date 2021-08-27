@@ -5,8 +5,30 @@ Our models
 from sortedm2m.fields import SortedManyToManyField
 
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, transaction
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+
+
+def _generate_slug(MyModel: models.Model, name: str) -> str:
+    """
+    Generate a valid slug and return it.
+    :param MyModel:
+    :type MyModel:
+    :param name:
+    :type name:
+    :return:
+    :rtype:
+    """
+
+    run = 0
+    slug_name = slugify(name, allow_unicode=True)
+
+    while MyModel.objects.filter(slug=slug_name).exists():
+        run += 1
+        slug_name = slugify(f"{name}-{run}", allow_unicode=True)
+
+    return slug_name
 
 
 class General(models.Model):
@@ -87,6 +109,7 @@ class SurveyForm(models.Model):
         help_text="Quick description what this survey is for ...",
     )
     is_active = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=254, unique=True, allow_unicode=True)
 
     class Meta:
         """
@@ -97,6 +120,21 @@ class SurveyForm(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    @transaction.atomic()
+    def save(self, *args, **kwargs):
+        """
+        Generate slug for new objects and update first and last messages.
+        :param args:
+        :type args:
+        :param kwargs:
+        :type kwargs:
+        """
+
+        if self._state.adding is True:
+            self.slug = _generate_slug(type(self), self.name)
+
+        super().save(*args, **kwargs)
 
 
 class Survey(models.Model):
