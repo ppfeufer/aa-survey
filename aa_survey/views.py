@@ -26,7 +26,7 @@ def check_for_main_character(user):
 @login_required
 @user_passes_test(check_for_main_character)
 @permission_required("aa_survey.basic_access")
-def dashboard(request: WSGIRequest, form_id=None) -> HttpResponse:
+def dashboard(request: WSGIRequest) -> HttpResponse:
     """
     Survey Dashboard view
 
@@ -34,72 +34,97 @@ def dashboard(request: WSGIRequest, form_id=None) -> HttpResponse:
     :type request:
     """
 
-    if form_id:
-        survey_form = get_object_or_404(SurveyForm, id=form_id)
+    available_surveys = []
 
-        if request.method == "POST":
-            try:
-                Survey.objects.filter(user=request.user).filter(form=survey_form)
+    for survey_form in SurveyForm.objects.all():
+        if (
+            not Survey.objects.filter(user=request.user)
+            .filter(form=survey_form)
+            .exists()
+        ):
+            available_surveys.append((survey_form.id, survey_form.name))
 
-                logger.warning(
-                    f"User {request.user} attempting to duplicate "
-                    f'survey "{survey_form.name}'
-                )
+    return render(
+        request,
+        "aa_survey/view/dashboard.html",
+        context={"available_surveys": available_surveys},
+    )
 
-                messages.warning(
-                    request,
-                    mark_safe(
-                        _("<h4>Warning!</h4><p>You have already taken this survey</p>")
-                    ),
-                )
 
-                return redirect("aa_survey:dashboard")
-            except Survey.DoesNotExist:
-                survey = Survey(user=request.user, form=survey_form)
-                survey.save()
+@login_required
+@user_passes_test(check_for_main_character)
+@permission_required("aa_survey.basic_access")
+def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
+    """
+    Survey view
+    :param request:
+    :type request:
+    :param survey_slug:
+    :type survey_slug:
+    :return:
+    :rtype:
+    """
 
-                for question in survey_form.questions.all():
-                    response = SurveyResponse(question=question, application=survey)
+    survey_form = get_object_or_404(SurveyForm, slug=survey_slug)
 
-                    response.answer = "\n".join(
-                        request.POST.getlist(str(question.pk), "")
-                    )
+    if request.method == "POST":
+        try:
+            Survey.objects.filter(user=request.user).filter(form=survey_form)
 
-                    response.save()
-
-                logger.info(f'{request.user} took survey "{survey}"')
-
-                messages.success(
-                    request,
-                    mark_safe(
-                        _(
-                            f"<h4>Success!</h4>"
-                            f'<p>Thank you for your participation in the survey "{survey}"</p>'
-                        )
-                    ),
-                )
-
-                return redirect("aa_survey:dashboard")
-        else:
-            questions = survey_form.questions.all()
-
-            return render(
-                request,
-                "hrapplications/create.html",
-                context={"questions": questions, "survey_form": survey_form.name},
+            logger.warning(
+                f"User {request.user} attempting to duplicate "
+                f'survey "{survey_form.name}'
             )
+
+            messages.warning(
+                request,
+                mark_safe(
+                    _("<h4>Warning!</h4><p>You have already taken this survey</p>")
+                ),
+            )
+
+            return redirect("aa_survey:dashboard")
+        except Survey.DoesNotExist:
+            survey = Survey(user=request.user, form=survey_form)
+            survey.save()
+
+            for question in survey_form.questions.all():
+                response = SurveyResponse(question=question, application=survey)
+
+                response.answer = "\n".join(request.POST.getlist(str(question.pk), ""))
+
+                response.save()
+
+            logger.info(f'{request.user} took survey "{survey}"')
+
+            messages.success(
+                request,
+                mark_safe(
+                    _(
+                        f"<h4>Success!</h4>"
+                        f'<p>Thank you for your participation in the survey "{survey}"</p>'
+                    )
+                ),
+            )
+
+            return redirect("aa_survey:dashboard")
     else:
-        available_surveys = []
-        for survey_form in SurveyForm.objects.all():
-            if (
-                not Survey.objects.filter(user=request.user)
-                .filter(form=survey_form)
-                .exists()
-            ):
-                available_surveys.append((survey_form.id, survey_form.name))
+        questions = survey_form.questions.all()
 
         return render(
             request,
-            "aa_survey/view/dashboard.html",
-            context={"available_surveys": available_surveys},
+            "hrapplications/create.html",
+            context={"survey_name": survey_form.name, "questions": questions},
         )
+
+
+@login_required
+@permission_required("aa_survey.manage_survey")
+def management_dashboard(request: WSGIRequest):
+    """
+    Survey management
+    :return:
+    :rtype:
+    """
+
+    return False

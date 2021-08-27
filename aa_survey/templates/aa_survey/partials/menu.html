@@ -22,8 +22,8 @@
                 </li>
 
                 {% if perms.aa_survey.manage_survey %}
-                    <li>
-                        <a href="#">{% translate "Administration" %}</a>
+                    <li class="{% navactive request 'aa_survey:management_dashboard' %}">
+                        <a href="{% url 'aa_survey:management_dashboard' %}">{% translate "Management" %}</a>
                     </li>
                 {% endif %}
             </ul>

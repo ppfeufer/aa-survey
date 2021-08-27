@@ -9,6 +9,8 @@ from django.db import models, transaction
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+from aa_survey.constants import INTERNAL_URL_PREFIX
+
 
 def _generate_slug(MyModel: models.Model, name: str) -> str:
     """
@@ -20,6 +22,9 @@ def _generate_slug(MyModel: models.Model, name: str) -> str:
     :return:
     :rtype:
     """
+
+    if name == INTERNAL_URL_PREFIX:
+        name = "hyphen"
 
     run = 0
     slug_name = slugify(name, allow_unicode=True)
@@ -131,7 +136,7 @@ class SurveyForm(models.Model):
         :type kwargs:
         """
 
-        if self._state.adding is True:
+        if self._state.adding is True or self.slug == INTERNAL_URL_PREFIX:
             self.slug = _generate_slug(type(self), self.name)
 
         super().save(*args, **kwargs)
