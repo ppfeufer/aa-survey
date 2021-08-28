@@ -55,4 +55,4 @@ def register_urls():
     :return:
     """
 
-    return UrlHook(urls, "aa_survey", r"^survey/")
+    return UrlHook(urls, "aa_survey", r"^surveys/")

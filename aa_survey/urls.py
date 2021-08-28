@@ -16,5 +16,5 @@ urlpatterns = [
         views.management_dashboard,
         name="management_dashboard",
     ),
-    path("<slug:survey_slug>/", views.survey, name="survey"),
+    path("survey/<slug:survey_slug>/", views.survey, name="survey"),
 ]
