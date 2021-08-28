@@ -8,6 +8,7 @@ from allianceauth import hooks
 from allianceauth.services.hooks import MenuItemHook, UrlHook
 
 from aa_survey import __title__, urls
+from aa_survey.views import available_surveys_count
 
 
 class AaSurveyMenuItem(MenuItemHook):  # pylint: disable=too-few-public-methods
@@ -33,6 +34,13 @@ class AaSurveyMenuItem(MenuItemHook):  # pylint: disable=too-few-public-methods
         """
 
         if request.user.has_perm("aa_survey.basic_access"):
+            count_available_surveys = available_surveys_count(request=request)
+            self.count = (
+                count_available_surveys
+                if count_available_surveys and count_available_surveys > 0
+                else None
+            )
+
             return MenuItemHook.render(self, request)
 
         return ""

@@ -128,3 +128,19 @@ def management_dashboard(request: WSGIRequest):
     """
 
     return False
+
+
+@login_required
+@permission_required("aa_survey.basic_access")
+def available_surveys_count(request: WSGIRequest) -> int:
+    available_surveys = 0
+
+    for survey_form in SurveyForm.objects.available():
+        if (
+            not Survey.objects.filter(user=request.user)
+            .filter(form=survey_form)
+            .exists()
+        ):
+            available_surveys += 1
+
+    return available_surveys
