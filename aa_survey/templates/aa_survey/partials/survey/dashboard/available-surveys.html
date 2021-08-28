@@ -5,7 +5,13 @@
         {{ survey.1 }}
     {% endfor %}
 {% else %}
-    <p>
-        {% translate "No surveys available at the moment." %}
-    </p>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="alert alert-info">
+                <p>
+                    {% translate "No surveys available at the moment." %}
+                </p>
+            </div>
+        </div>
+    </div>
 {% endif %}
