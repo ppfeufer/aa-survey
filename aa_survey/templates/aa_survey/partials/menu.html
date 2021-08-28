@@ -17,7 +17,7 @@
 
         <div class="collapse navbar-collapse nav navbar-left" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="{% navactive request 'aa_survey:dashboard' %}">
+                <li class="{% navactive request 'aa_survey:dashboard aa_survey:survey' %}">
                     <a href="{% url 'aa_survey:dashboard' %}">{% translate "Available Surveys" %}</a>
                 </li>
 

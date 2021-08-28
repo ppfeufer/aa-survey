@@ -36,13 +36,13 @@ def dashboard(request: WSGIRequest) -> HttpResponse:
 
     available_surveys = []
 
-    for survey_form in SurveyForm.objects.all():
+    for survey_form in SurveyForm.objects.available():
         if (
             not Survey.objects.filter(user=request.user)
             .filter(form=survey_form)
             .exists()
         ):
-            available_surveys.append((survey_form.id, survey_form.name))
+            available_surveys.append(survey_form)
 
     return render(
         request,
@@ -69,7 +69,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 
     if request.method == "POST":
         try:
-            Survey.objects.filter(user=request.user).filter(form=survey_form)
+            Survey.objects.get(user=request.user, form=survey_form)
 
             logger.warning(
                 f"User {request.user} attempting to duplicate "
@@ -79,7 +79,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
             messages.warning(
                 request,
                 mark_safe(
-                    _("<h4>Warning!</h4><p>You have already taken this survey</p>")
+                    _("<h4>Warning!</h4><p>You have already taken this survey!</p>")
                 ),
             )
 
@@ -89,20 +89,20 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
             survey.save()
 
             for question in survey_form.questions.all():
-                response = SurveyResponse(question=question, application=survey)
+                response = SurveyResponse(question=question, survey=survey)
 
                 response.answer = "\n".join(request.POST.getlist(str(question.pk), ""))
 
                 response.save()
 
-            logger.info(f'{request.user} took survey "{survey}"')
+            logger.info(f'{request.user} took survey "{survey_form.name}"')
 
             messages.success(
                 request,
                 mark_safe(
                     _(
                         f"<h4>Success!</h4>"
-                        f'<p>Thank you for your participation in the survey "{survey}"</p>'
+                        f'<p>Thank you for your participation in the survey "{survey_form.name}"</p>'
                     )
                 ),
             )
@@ -113,8 +113,8 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 
         return render(
             request,
-            "hrapplications/create.html",
-            context={"survey_name": survey_form.name, "questions": questions},
+            "aa_survey/view/survey.html",
+            context={"survey_form": survey_form, "questions": questions},
         )
 
 

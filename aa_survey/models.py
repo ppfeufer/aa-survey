@@ -10,6 +10,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from aa_survey.constants import INTERNAL_URL_PREFIX
+from aa_survey.managers import SurveyFormManager
 
 
 def _generate_slug(MyModel: models.Model, name: str) -> str:
@@ -123,11 +124,13 @@ class SurveyForm(models.Model):
         null=True,
         verbose_name="Available until",
         help_text=(
-            "This survey is available until ... (Optional: If no date is set, "
-            "the survey will be available until it is no longer marked as active.)"
+            "This survey is available until (Eve Time) ... (Optional: If no date is "
+            "set, the survey will be available until it is no longer marked as active.)"
         ),
     )
     slug = models.SlugField(max_length=254, unique=True, allow_unicode=True)
+
+    objects = SurveyFormManager()
 
     class Meta:
         """
@@ -135,6 +138,7 @@ class SurveyForm(models.Model):
         """
 
         default_permissions = ()
+        ordering = ["-pk"]
 
     def __str__(self):
         return str(self.name)

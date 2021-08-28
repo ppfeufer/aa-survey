@@ -1,0 +1,52 @@
+{% load i18n %}
+
+<div class="clearfix">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                {{ survey_form.name }}
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="col-md-8 col-md-offset-2">
+                {% if survey_form.description %}
+                    {{ survey_form.description|linebreaks }}
+                {% endif %}
+
+                <form class="form-aa-survey">
+                    {% csrf_token %}
+
+                    {% for question in questions %}
+                        <fieldset class="form-group">
+                            <legend>{{ question.title }}</legend>
+
+                            <div class="form-group">
+                                <div class="aa-survey-question">
+                                    {% if question.help_text %}
+                                        <div class="aa-survey-question-help-text">
+                                            {{ question.help_text|linebreaks }}
+                                        </div>
+                                    {% endif %}
+
+                                    {% for choice in question.choices.all %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="{% if question.multi_select == False %}radio{% else %}checkbox{% endif %}" name="{{ question.pk }}" id="question-{{ question.pk }}_choice-{{ forloop.counter }}" value="{{ choice.choice_text }}" />
+                                            <label class="form-check-label" for="question-{{ question.pk }}_choice-{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                                        </div>
+                                    {% empty %}
+                                        <div class="form-group">
+                                            <textarea class="form-control"id="id_{{ question.pk }}" name="{{ question.pk }}" rows="10"></textarea>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </fieldset>
+                    {% endfor %}
+
+                    <button class="btn btn-lg btn-primary" type="submit" formmethod="post">{% translate "Submit" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
