@@ -30,4 +30,13 @@ class QuestionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SurveyQuestion, QuestionAdmin)
-admin.site.register(SurveyForm)
+
+
+@admin.register(SurveyForm)
+class SurveyFormAdmin(admin.ModelAdmin):
+    """
+    SurveyForm admin
+    """
+
+    list_display = ("name", "description", "open_until", "is_active")
+    exclude = ("slug",)

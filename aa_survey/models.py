@@ -103,17 +103,30 @@ class SurveyForm(models.Model):
     Survey forms
     """
 
+    is_active = models.BooleanField(default=True)
     questions = SortedManyToManyField(SurveyQuestion)
     name = models.CharField(
-        max_length=254, blank=False, null=False, verbose_name="Survey Name"
+        max_length=254,
+        blank=False,
+        null=False,
+        verbose_name="Survey Name",
+        help_text="Give your survey a good and descriptive name",
     )
     description = models.TextField(
         blank=False,
         null=False,
         verbose_name="Survey Description",
-        help_text="Quick description what this survey is for ...",
+        help_text="Quick description what this survey is about ...",
     )
-    is_active = models.BooleanField(default=True)
+    open_until = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="Available until",
+        help_text=(
+            "This survey is available until ... (Optional: If no date is set, "
+            "the survey will be available until it is no longer marked as active.)"
+        ),
+    )
     slug = models.SlugField(max_length=254, unique=True, allow_unicode=True)
 
     class Meta:
