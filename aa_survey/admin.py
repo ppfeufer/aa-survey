@@ -24,7 +24,7 @@ class QuestionAdmin(admin.ModelAdmin):
     """
 
     fieldsets = [
-        (None, {"fields": ["title", "help_text", "multi_select"]}),
+        (None, {"fields": ["title", "help_text", "mandatory", "multi_select"]}),
     ]
     inlines = [ChoiceInline]
 

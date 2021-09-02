@@ -66,6 +66,7 @@ class SurveyQuestion(models.Model):
     title = models.CharField(max_length=254, verbose_name="Question")
     help_text = models.TextField(blank=True, null=True)
     multi_select = models.BooleanField(default=False)
+    mandatory = models.BooleanField(default=False)
 
     class Meta:
         """

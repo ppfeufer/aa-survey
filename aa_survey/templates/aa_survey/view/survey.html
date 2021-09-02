@@ -22,4 +22,21 @@
 {% endblock %}
 
 {% block extra_javascript %}
+    <script type="application/javascript">
+        $(function () {
+            'use strict';
+
+            $.each(mandatoryCheckboxGroups, function (i, value) {
+                let requiredCheckboxes = $(value + ' :checkbox[required]');
+
+                requiredCheckboxes.change(function () {
+                    if(requiredCheckboxes.is(':checked')) {
+                        requiredCheckboxes.removeAttr('required');
+                    } else {
+                        requiredCheckboxes.attr('required', 'required');
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
