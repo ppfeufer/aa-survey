@@ -21,6 +21,7 @@
     {% include 'bundles/datatables-css.html' %}
 
     <link rel="stylesheet" type="text/css" href="{% versioned_static 'aa_survey/css/aa-bootstrap-fix.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% versioned_static 'aa_survey/css/aa-survey.min.css' %}">
 {% endblock %}
 
 {% block extra_javascript %}
@@ -65,7 +66,7 @@
                     },
                     {
                         data: 'count',
-                        className: 'aa-survey-survey-count'
+                        className: 'aa-survey-survey-count text-right'
                     },
                     {
                         data: 'actions',

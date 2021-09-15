@@ -9,6 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
+from aa_survey.helper.buttons import get_survey_management_action_buttons
 from aa_survey.models import SurveyForm
 
 
@@ -52,6 +53,8 @@ def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
         )
         survey_form_name_html = f'<a href="{survey_form_url}">{survey_form.name}</a>'
 
+        actions = get_survey_management_action_buttons(request, survey_form)
+
         data.append(
             {
                 "name": survey_form.name,
@@ -61,7 +64,7 @@ def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
                 },
                 "description": survey_form.description,
                 "count": survey_form.num_surveys,
-                "actions": "",
+                "actions": actions,
             }
         )
 
