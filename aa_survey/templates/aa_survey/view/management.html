@@ -38,14 +38,16 @@
                     cache: false
                 },
                 columns: [
-                    {#{#}
-                    {#    data: 'name_html',#}
-                    {#    render: {#}
-                    {#        display: 'display',#}
-                    {#        _: 'sort'#}
-                    {#    },#}
-                    {#    className: 'aa-survey-survey-name'#}
-                    {#},#}
+                    /*
+                    {
+                        data: 'name_html',
+                        render: {
+                            display: 'display',
+                            _: 'sort'
+                        },
+                        className: 'aa-survey-survey-name'
+                    },
+                     */
                     {
                         data: 'name',
                         className: 'aa-survey-survey-name'
@@ -67,15 +69,17 @@
                     },
                     {
                         data: 'actions',
-                        className: 'aa-survey-survey-acrions'
+                        className: 'aa-survey-survey-actions'
                     },
 
                     /**
                      * hidden columns
                      */
-                    {#{data: 'ship'},#}
-                    {#{data: 'request_status'},#}
-                    {#{data: 'character'},#}
+                    /*
+                    {data: 'ship'},
+                    {data: 'request_status'},
+                    {data: 'character'},
+                     */
                 ],
                 columnDefs: [
                     {
@@ -84,31 +88,6 @@
                     }
                 ],
                 bSort: false,
-                {#order: [#}
-                {#    [0, 'asc']#}
-                {#],#}
-                {#filterDropDown: {#}
-                {#    columns: [#}
-                {#        {#}
-                {#            idx: 1,#}
-                {#        },#}
-                {#        {#}
-                {#            idx: 11,#}
-                {#            title: aaSrpSettings.translation.filter.character#}
-                {#        },#}
-                {#        {#}
-                {#            idx: 9,#}
-                {#            title: aaSrpSettings.translation.filter.ship#}
-                {#        },#}
-                {#        {#}
-                {#            idx: 10,#}
-                {#            title: aaSrpSettings.translation.filter.requestStatus#}
-                {#        }#}
-                {#    ],#}
-                {#    autoSize: false,#}
-                {#    bootstrap: true#}
-                {#},#}
-                {#paging: false,#}
             });
         });
     </script>
