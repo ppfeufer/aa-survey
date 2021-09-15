@@ -8,6 +8,10 @@ from django.utils import timezone
 
 
 class SurveyFormQuerySet(models.QuerySet):
+    """
+    SurveyFormQuerySet
+    """
+
     def available(self) -> models.QuerySet:
         """
         Filter boards that given user has access to.
