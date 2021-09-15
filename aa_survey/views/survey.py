@@ -67,32 +67,27 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 
     survey_form = get_object_or_404(SurveyForm, slug=survey_slug)
 
-    if request.method == "POST":
-        try:
-            Survey.objects.get(user=request.user, form=survey_form)
+    try:
+        Survey.objects.get(user=request.user, form=survey_form)
 
-            logger.warning(
-                f"User {request.user} attempting to duplicate "
-                f'survey "{survey_form.name}'
-            )
+        logger.warning(
+            f'User {request.user} attempting to duplicate survey "{survey_form.name}"'
+        )
 
-            messages.warning(
-                request,
-                mark_safe(
-                    _("<h4>Warning!</h4><p>You have already taken this survey!</p>")
-                ),
-            )
+        messages.warning(
+            request,
+            mark_safe(_("<h4>Warning!</h4><p>You have already taken this survey!</p>")),
+        )
 
-            return redirect("aa_survey:dashboard")
-        except Survey.DoesNotExist:
+        return redirect("aa_survey:survey_dashboard")
+    except Survey.DoesNotExist:
+        if request.method == "POST":
             survey = Survey(user=request.user, form=survey_form)
             survey.save()
 
             for question in survey_form.questions.all():
                 response = SurveyResponse(question=question, survey=survey)
-
                 response.answer = "\n".join(request.POST.getlist(str(question.pk), ""))
-
                 response.save()
 
             logger.info(f'{request.user} took survey "{survey_form.name}"')
@@ -102,20 +97,21 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
                 mark_safe(
                     _(
                         f"<h4>Success!</h4>"
-                        f'<p>Thank you for your participation in the survey "{survey_form.name}"</p>'
+                        f"<p>Thank you for your participation in the "
+                        f'survey "{survey_form.name}"</p>'
                     )
                 ),
             )
 
-            return redirect("aa_survey:dashboard")
-    else:
-        questions = survey_form.questions.all()
+            return redirect("aa_survey:survey_dashboard")
+        else:
+            questions = survey_form.questions.all()
 
-        return render(
-            request,
-            "aa_survey/view/survey.html",
-            context={"survey_form": survey_form, "questions": questions},
-        )
+            return render(
+                request,
+                "aa_survey/view/survey.html",
+                context={"survey_form": survey_form, "questions": questions},
+            )
 
 
 @login_required
