@@ -22,7 +22,7 @@
                 </li>
 
                 {% if perms.aa_survey.manage_survey %}
-                    <li class="{% navactive request 'aa_survey:management_dashboard' %}">
+                    <li class="{% navactive request 'aa_survey:management_dashboard aa_survey:management_result' %}">
                         <a href="{% url 'aa_survey:management_dashboard' %}">{% translate "Management" %}</a>
                     </li>
                 {% endif %}
