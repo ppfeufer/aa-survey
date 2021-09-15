@@ -1,5 +1,5 @@
 """
-The views
+Survey views
 """
 
 from app_utils.logging import logger
@@ -116,18 +116,6 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
             "aa_survey/view/survey.html",
             context={"survey_form": survey_form, "questions": questions},
         )
-
-
-@login_required
-@permission_required("aa_survey.manage_survey")
-def management_dashboard(request: WSGIRequest):
-    """
-    Survey management
-    :return:
-    :rtype:
-    """
-
-    return False
 
 
 @login_required

@@ -1,0 +1,68 @@
+"""
+Management views
+"""
+
+from django.contrib.auth.decorators import login_required, permission_required
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import Count
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.urls import reverse
+
+from aa_survey.models import SurveyForm
+
+
+@login_required
+@permission_required("aa_survey.manage_survey")
+def dashboard(request: WSGIRequest) -> HttpResponse:
+    """
+    Survey management
+    :return:
+    :rtype:
+    """
+
+    return render(request, "aa_survey/view/management.html")
+
+
+@login_required
+@permission_required("aa_survey.manage_survey")
+def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
+    """
+    Ajax :: Get survey forms
+    :param request:
+    :type request:
+    :return:
+    :rtype:
+    """
+
+    data = list()
+    survey_forms = (
+        SurveyForm.objects.prefetch_related(
+            "surveys",
+        )
+        .annotate(
+            num_surveys=Count("surveys", distinct=True),
+        )
+        .order_by("pk")
+    )
+
+    for survey_form in survey_forms:
+        survey_form_url = reverse(
+            "aa_survey:survey_survey", kwargs={"survey_slug": survey_form.slug}
+        )
+        survey_form_name_html = f'<a href="{survey_form_url}">{survey_form.name}</a>'
+
+        data.append(
+            {
+                "name": survey_form.name,
+                "name_html": {
+                    "display": survey_form_name_html,
+                    "sort": survey_form.name,
+                },
+                "description": survey_form.description,
+                "count": survey_form.num_surveys,
+                "actions": "",
+            }
+        )
+
+    return JsonResponse(data, safe=False)
