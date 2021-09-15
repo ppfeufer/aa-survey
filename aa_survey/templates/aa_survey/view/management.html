@@ -33,7 +33,7 @@
              */
             let surveyFormsTable = $('.aa-survey-survey-forms').DataTable({
                 ajax: {
-                    url: '{% url "aa_survey:ajax_get_survey_forms" %}',
+                    url: '{% url "aa_survey:management_ajax_get_survey_forms" %}',
                     dataSrc: '',
                     cache: false
                 },

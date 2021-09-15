@@ -25,6 +25,6 @@ urlpatterns = [
     path(
         f"{INTERNAL_URL_PREFIX}/ajax/get-survey-forms",
         management.ajax_get_survey_forms,
-        name="ajax_get_survey_forms",
+        name="management_ajax_get_survey_forms",
     ),
 ]
