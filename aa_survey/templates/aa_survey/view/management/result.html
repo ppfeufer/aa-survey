@@ -1,0 +1,26 @@
+{% extends "aa_survey/base.html" %}
+
+{% load aa_survey_versioned_static %}
+{% load evelinks %}
+{% load static %}
+{% load i18n %}
+
+{% block page_title %}{% translate "Survey Results" %}{% endblock %}
+
+{% block aa_survey_header %}
+    <br>
+
+    {% include "aa_survey/partials/menu.html" %}
+{% endblock %}
+
+{% block aa_survey_body %}
+
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% versioned_static 'aa_survey/css/aa-bootstrap-fix.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% versioned_static 'aa_survey/css/aa-survey.min.css' %}">
+{% endblock %}
+
+{% block extra_javascript %}
+{% endblock %}

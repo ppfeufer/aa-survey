@@ -69,3 +69,31 @@ def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
         )
 
     return JsonResponse(data, safe=False)
+
+
+@login_required
+@permission_required("aa_survey.manage_survey")
+def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
+    """
+    Surves result
+    :param request:
+    :type request:
+    :param survey_slug:
+    :type survey_slug:
+    """
+
+    survey_form = (
+        SurveyForm.objects.prefetch_related(
+            "surveys",
+        )
+        .filter(slug__exact=survey_slug)
+        .annotate(
+            num_surveys=Count("surveys", distinct=True),
+        )
+        .order_by("pk")
+        .get()
+    )
+
+    context = {"survey_form": survey_form}
+
+    return render(request, "aa_survey/view/management/result.html", context)
