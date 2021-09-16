@@ -46,7 +46,7 @@ def dashboard(request: WSGIRequest) -> HttpResponse:
 
     return render(
         request,
-        "aa_survey/view/dashboard.html",
+        "aa_survey/view/survey/dashboard.html",
         context={"available_surveys": available_surveys},
     )
 
@@ -109,7 +109,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 
             return render(
                 request,
-                "aa_survey/view/survey.html",
+                "aa_survey/view/survey/survey.html",
                 context={"survey_form": survey_form, "questions": questions},
             )
 

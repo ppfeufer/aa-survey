@@ -22,7 +22,7 @@ def dashboard(request: WSGIRequest) -> HttpResponse:
     :rtype:
     """
 
-    return render(request, "aa_survey/view/management.html")
+    return render(request, "aa_survey/view/management/dashboard.html")
 
 
 @login_required
@@ -75,7 +75,7 @@ def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
 @permission_required("aa_survey.manage_survey")
 def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
     """
-    Surves result
+    Survey results
     :param request:
     :type request:
     :param survey_slug:
