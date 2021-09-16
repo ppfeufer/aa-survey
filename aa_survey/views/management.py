@@ -83,7 +83,9 @@ def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
     """
 
     survey_form = (
-        SurveyForm.objects.prefetch_related("surveys")
+        SurveyForm.objects.prefetch_related(
+            "surveys", "questions", "questions__choices"
+        )
         .filter(slug__exact=survey_slug)
         .annotate(
             num_surveys=Count("surveys", distinct=True),
