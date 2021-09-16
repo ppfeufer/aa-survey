@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from aa_survey.helper.buttons import get_survey_management_action_buttons
-from aa_survey.models import SurveyForm
+from aa_survey.models import SurveyForm, SurveyResponse
 
 
 @login_required
@@ -84,7 +84,9 @@ def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 
     survey_form = (
         SurveyForm.objects.prefetch_related(
-            "surveys", "surveys__responses", "surveys__responses__question"
+            "surveys",
+            # "surveys__responses",
+            # "surveys__responses__question"
         )
         .filter(slug__exact=survey_slug)
         .annotate(
@@ -94,6 +96,16 @@ def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
         .get()
     )
 
-    context = {"survey_form": survey_form}
+    responses = []
+
+    if survey_form.num_surveys > 0:
+        for question in survey_form.questions.all():
+            surveys_response = SurveyResponse.objects.filter(
+                survey__form=survey_form, question=question
+            )
+
+            responses.append({"question": question, "responses": surveys_response})
+
+    context = {"survey_form": survey_form, "responses": responses}
 
     return render(request, "aa_survey/view/management/result.html", context)
