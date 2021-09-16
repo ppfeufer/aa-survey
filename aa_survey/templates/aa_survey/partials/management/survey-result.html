@@ -1,0 +1,15 @@
+{% for response in responses %}
+{#    <p>{{ response }}</p>#}
+
+    <p>{{ response.question.title }}</p>
+
+    {% for questions_response in response.responses %}
+        {% if response.question.choices.all %}
+            <p>{{ questions_response.answer }} (Needs to be counted)<br></p>
+        {% else %}
+            <p>{{ questions_response.answer }}</p>
+        {% endif %}
+    {% endfor %}
+
+    <p>&nbsp;</p>
+{% endfor %}
