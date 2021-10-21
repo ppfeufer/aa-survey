@@ -19,15 +19,15 @@ class TestViews(TestCase):
 
         super().setUpClass()
 
-        # User cannot access forum
+        # User cannot access survey module
         cls.user_1001 = create_fake_user(1002, "Peter Parker")
 
-        # User can access forum
+        # User can access survey module
         cls.user_1002 = create_fake_user(
             1001, "Bruce Wayne", permissions=["aa_survey.basic_access"]
         )
 
-        # User can manage forum
+        # User can manage survey module
         cls.user_1003 = create_fake_user(
             1003,
             "Clark Kent",
@@ -36,7 +36,7 @@ class TestViews(TestCase):
 
     def test_should_show_survey_dashboard(self):
         """
-        Test that a user with basic_access can see the bulletin board
+        Test that a user with basic_access can see the survey module
         :return:
         :rtype:
         """
@@ -52,7 +52,7 @@ class TestViews(TestCase):
 
     def test_should_not_show_survey_dashboard(self):
         """
-        Test that a user without basic_access can't see the surveys
+        Test that a user without basic_access can't see the survey module
         :return:
         :rtype:
         """
@@ -68,7 +68,7 @@ class TestViews(TestCase):
 
     def test_should_show_management_dashboard(self):
         """
-        Test that a user with basic_access can see the bulletin board
+        Test that a user with manage_survey can see the management dashboard
         :return:
         :rtype:
         """
@@ -84,7 +84,7 @@ class TestViews(TestCase):
 
     def test_should_not_show_management_dashboard(self):
         """
-        Test that a user without basic_access can't see the surveys
+        Test that a user without manage_survey can't see the management dashboard
         :return:
         :rtype:
         """
