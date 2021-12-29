@@ -1,10 +1,14 @@
+# Standard Library
 import re
 from typing import List
 
+# Third Party
 from faker import Faker
 
+# Django
 from django.contrib.auth.models import User
 
+# Alliance Auth
 from allianceauth.tests.auth_utils import AuthUtils
 
 fake = Faker()

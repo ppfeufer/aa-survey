@@ -2,8 +2,10 @@
 App config
 """
 
+# Django
 from django.apps import AppConfig
 
+# AA Survey
 from aa_survey import __version__
 
 

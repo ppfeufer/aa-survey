@@ -2,13 +2,16 @@
 Our models
 """
 
+# Third Party
 from sortedm2m.fields import SortedManyToManyField
 
+# Django
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+# AA Survey
 from aa_survey.constants import INTERNAL_URL_PREFIX
 from aa_survey.managers import SurveyFormManager
 

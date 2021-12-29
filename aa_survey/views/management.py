@@ -2,6 +2,7 @@
 Management views
 """
 
+# Django
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Count
@@ -9,6 +10,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
+# AA Survey
 from aa_survey.helper.buttons import get_survey_management_action_buttons
 from aa_survey.models import SurveyForm, SurveyResponse
 

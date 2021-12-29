@@ -2,9 +2,11 @@
 Tests for view.py
 """
 
+# Django
 from django.test import TestCase
 from django.urls import reverse
 
+# AA Survey
 from aa_survey.tests.utils import create_fake_user
 
 VIEWS_PATH = "aa_survey.views"

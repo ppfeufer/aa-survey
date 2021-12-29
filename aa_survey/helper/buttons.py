@@ -2,10 +2,12 @@
 Helper for rendering bootstrap buttons
 """
 
+# Django
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.urls import reverse
 
+# AA Survey
 from aa_survey.models import SurveyForm
 
 

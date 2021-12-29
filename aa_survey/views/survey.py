@@ -2,8 +2,7 @@
 Survey views
 """
 
-from app_utils.logging import logger
-
+# Django
 from django.contrib import messages
 from django.contrib.auth.decorators import (
     login_required,
@@ -16,6 +15,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
+# Alliance Auth (External Libs)
+from app_utils.logging import logger
+
+# AA Survey
 from aa_survey.models import Survey, SurveyForm, SurveyResponse
 
 

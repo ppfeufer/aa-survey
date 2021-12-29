@@ -2,8 +2,10 @@
 Django admin
 """
 
+# Django
 from django.contrib import admin
 
+# AA Survey
 from aa_survey.models import SurveyChoice, SurveyForm, SurveyQuestion
 
 

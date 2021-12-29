@@ -2,8 +2,10 @@
 Constants
 """
 
+# Django
 from django.utils.text import slugify
 
+# AA Survey
 from aa_survey import __version__
 
 github_url = "https://github.com/ppfeufer/aa-survey"

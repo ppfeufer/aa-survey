@@ -2,8 +2,10 @@
 AA-Survey path config
 """
 
+# Django
 from django.urls import path
 
+# AA Survey
 from aa_survey.constants import INTERNAL_URL_PREFIX
 from aa_survey.views import management, survey
 
