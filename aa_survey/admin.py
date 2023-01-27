@@ -20,6 +20,7 @@ class ChoiceInline(admin.TabularInline):
     verbose_name = "Choice"
 
 
+@admin.register(SurveyQuestion)
 class QuestionAdmin(admin.ModelAdmin):
     """
     QuestionAdmin
@@ -29,9 +30,6 @@ class QuestionAdmin(admin.ModelAdmin):
         (None, {"fields": ["title", "help_text", "mandatory", "multi_select"]}),
     ]
     inlines = [ChoiceInline]
-
-
-admin.site.register(SurveyQuestion, QuestionAdmin)
 
 
 @admin.register(SurveyForm)
