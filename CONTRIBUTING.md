@@ -38,3 +38,13 @@ branch will be considered.
 
 Please make sure you have signed the [License Agreement](https://developers.eveonline.com/resource/license-agreement)
 by logging in at https://developers.eveonline.com before submitting any pull requests.
+
+
+## Translation
+
+This app is fully translation-ready and translations are handled via [Weblate]. If
+you like to contribute to the app's translation or simply improve it, feel free to
+register on my [Weblate] site and message me so I can add you to the right group.
+
+<!-- Links -->
+[Weblate]: https://weblate.ppfeufer.de/ "Weblate"
