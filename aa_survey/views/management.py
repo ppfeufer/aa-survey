@@ -38,7 +38,7 @@ def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
     :rtype:
     """
 
-    data = list()
+    data = []
     survey_forms = (
         SurveyForm.objects.prefetch_related(
             "surveys",
