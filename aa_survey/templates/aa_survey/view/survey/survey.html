@@ -1,0 +1,42 @@
+{% extends "aa_survey/base.html" %}
+
+{% load aa_survey_versioned_static %}
+{% load evelinks %}
+{% load static %}
+{% load i18n %}
+
+{% block page_title %}{% translate "Survey" %} "{{ survey_form.name }}" » {% translate "Surveys" %}{% endblock %}
+
+{% block aa_survey_header %}
+    <br>
+
+    {% include "aa_survey/partials/menu.html" %}
+{% endblock %}
+
+{% block aa_survey_body %}
+    {% include "aa_survey/partials/survey/survey/form.html" %}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% aa_survey_static 'aa_survey/css/aa-bootstrap-fix.min.css' %}">
+{% endblock %}
+
+{% block extra_javascript %}
+    <script type="application/javascript">
+        $(function () {
+            'use strict';
+
+            $.each(mandatoryCheckboxGroups, function (i, value) {
+                let requiredCheckboxes = $(value + ' :checkbox[required]');
+
+                requiredCheckboxes.change(function () {
+                    if(requiredCheckboxes.is(':checked')) {
+                        requiredCheckboxes.removeAttr('required');
+                    } else {
+                        requiredCheckboxes.attr('required', 'required');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "aa_survey/base.html" %}
+
+{% load aa_survey_versioned_static %}
+{% load evelinks %}
+{% load static %}
+{% load i18n %}
+
+{% block page_title %}{% translate "Surveys » Management" %}{% endblock %}
+
+{% block aa_survey_header %}
+    <br>
+
+    {% include "aa_survey/partials/menu.html" %}
+{% endblock %}
+
+{% block aa_survey_body %}
+    {% include "aa_survey/partials/management/survey-table.html" %}
+{% endblock %}
+
+{% block extra_css %}
+    {% include 'bundles/datatables-css.html' %}
+
+    <link rel="stylesheet" type="text/css" href="{% aa_survey_static 'aa_survey/css/aa-bootstrap-fix.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% aa_survey_static 'aa_survey/css/aa-survey.min.css' %}">
+{% endblock %}
+
+{% block extra_javascript %}
+    {% include 'bundles/datatables-js.html' %}
+
+    <script type="application/javascript">
+        $(function () {
+            /**
+             * Table :: SRP Requests
+             */
+            let surveyFormsTable = $('.aa-survey-survey-forms').DataTable({
+                ajax: {
+                    url: '{% url "aa_survey:management_ajax_get_survey_forms" %}',
+                    dataSrc: '',
+                    cache: false
+                },
+                columns: [
+                    /*
+                    {
+                        data: 'name_html',
+                        render: {
+                            display: 'display',
+                            _: 'sort'
+                        },
+                        className: 'aa-survey-survey-name'
+                    },
+                     */
+                    {
+                        data: 'name',
+                        className: 'aa-survey-survey-name'
+                    },
+                    {
+                        data: 'description',
+                        className: 'aa-survey-survey-description',
+                        render: function ( data, type, row ) {
+                            let formatted_text = data
+                                .replace(/\n\s*\n/g, '</p><p>')
+                                .replace(/\n/g, '<br>')
+
+                            return '<p>' + formatted_text + '</p>';
+                        }
+                    },
+                    {
+                        data: 'count',
+                        className: 'aa-survey-survey-count text-right'
+                    },
+                    {
+                        data: 'actions',
+                        className: 'aa-survey-survey-actions text-right'
+                    },
+
+                    /**
+                     * hidden columns
+                     */
+                    /*
+                    {data: 'ship'},
+                    {data: 'request_status'},
+                    {data: 'character'},
+                     */
+                ],
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: [0, 1, 2]
+                    }
+                ],
+                bSort: false,
+            });
+        });
+    </script>
+{% endblock %}

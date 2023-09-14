@@ -1,0 +1,22 @@
+{% extends "allianceauth/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block page_title %}{% translate "Survey" %}{% endblock %}
+
+{% block content %}
+    <div class="aa-survey">
+        <div class="aa-survey-header">
+            {% block aa_survey_header %}{% endblock %}
+        </div>
+
+        <div class="aa-survey-body">
+            {% block aa_survey_body %}{% endblock %}
+        </div>
+
+        <div class="aa-survey-footer">
+            {% include "aa_survey/partials/footer/app-translation-footer.html" %}
+        </div>
+    </div>
+{% endblock %}

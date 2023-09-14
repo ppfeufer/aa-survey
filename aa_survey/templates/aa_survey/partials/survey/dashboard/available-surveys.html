@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% if available_surveys %}
+    <div class="row">
+        {% for survey in available_surveys %}
+            <div class="col-md-6 col-lg-4">
+                <div class="panel panel-default panel-available-survey">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            {{ survey.name }}
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        {{ survey.description|truncatechars:140|linebreaks }}
+                    </div>
+
+                    <div class="panel-footer">
+                        <a href="{% url 'aa_survey:survey_survey' survey.slug %}" class="btn btn-default btn-sm">
+                            {% translate "Take Survey" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="alert alert-info">
+                <p>
+                    {% translate "No surveys available at the moment." %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endif %}
