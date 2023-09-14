@@ -8,13 +8,13 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.urls import reverse
 
 # AA Survey
-from aa_survey.models import SurveyForm
+from aa_survey.models import Form
 
 
 @login_required
 @permission_required("aa_survey.manage_survey")
 def get_survey_management_action_buttons(
-    request: WSGIRequest, survey_form: SurveyForm
+    request: WSGIRequest, survey_form: Form
 ) -> str:
     """
     Get the action buttons for the management dashboard view table

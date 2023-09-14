@@ -12,7 +12,7 @@ from django.urls import reverse
 
 # AA Survey
 from aa_survey.helper.buttons import get_survey_management_action_buttons
-from aa_survey.models import SurveyForm, SurveyResponse
+from aa_survey.models import Form, Response
 
 
 @login_required
@@ -40,7 +40,7 @@ def ajax_get_survey_forms(request: WSGIRequest) -> JsonResponse:
 
     data = []
     survey_forms = (
-        SurveyForm.objects.prefetch_related(
+        Form.objects.prefetch_related(
             "surveys",
         )
         .annotate(
@@ -85,9 +85,7 @@ def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
     """
 
     survey_form = (
-        SurveyForm.objects.prefetch_related(
-            "surveys", "questions", "questions__choices"
-        )
+        Form.objects.prefetch_related("surveys", "questions", "questions__choices")
         .filter(slug__exact=survey_slug)
         .annotate(
             num_surveys=Count("surveys", distinct=True),
@@ -100,7 +98,7 @@ def result(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 
     if survey_form.num_surveys > 0:
         for question in survey_form.questions.all():
-            survey_response = SurveyResponse.objects.filter(
+            survey_response = Response.objects.filter(
                 survey__form=survey_form, question=question
             )
 

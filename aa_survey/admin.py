@@ -6,7 +6,7 @@ Django admin
 from django.contrib import admin
 
 # AA Survey
-from aa_survey.models import SurveyChoice, SurveyForm, SurveyQuestion
+from aa_survey.models import Choice, Form, Question
 
 
 class ChoiceInline(admin.TabularInline):
@@ -14,13 +14,13 @@ class ChoiceInline(admin.TabularInline):
     ChoiceInline
     """
 
-    model = SurveyChoice
+    model = Choice
     extra = 0
     verbose_name_plural = "Choices (optional)"
     verbose_name = "Choice"
 
 
-@admin.register(SurveyQuestion)
+@admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     """
     QuestionAdmin
@@ -32,7 +32,7 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
 
 
-@admin.register(SurveyForm)
+@admin.register(Form)
 class SurveyFormAdmin(admin.ModelAdmin):
     """
     SurveyForm admin

@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.utils import timezone
 
 
-class SurveyFormQuerySet(models.QuerySet):
+class FormQuerySet(models.QuerySet):
     """
     SurveyFormQuerySet
     """
@@ -25,7 +25,7 @@ class SurveyFormQuerySet(models.QuerySet):
         ).distinct()
 
 
-class SurveyFormManagerBase(models.Manager):
+class FormManagerBase(models.Manager):
     """
     BoardManagerBase
     """
@@ -33,4 +33,4 @@ class SurveyFormManagerBase(models.Manager):
     pass
 
 
-SurveyFormManager = SurveyFormManagerBase.from_queryset(SurveyFormQuerySet)
+FormManager = FormManagerBase.from_queryset(FormQuerySet)

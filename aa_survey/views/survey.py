@@ -19,7 +19,7 @@ from django.utils.translation import gettext as _
 from app_utils.logging import logger
 
 # AA Survey
-from aa_survey.models import Survey, SurveyForm, SurveyResponse
+from aa_survey.models import Form, Response, Survey
 
 
 def check_for_main_character(user):
@@ -39,7 +39,7 @@ def dashboard(request: WSGIRequest) -> HttpResponse:
 
     available_surveys = []
 
-    for survey_form in SurveyForm.objects.available():
+    for survey_form in Form.objects.available():
         if (
             not Survey.objects.filter(user=request.user)
             .filter(form=survey_form)
@@ -68,7 +68,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
     :rtype:
     """
 
-    survey_form = get_object_or_404(SurveyForm, slug=survey_slug)
+    survey_form = get_object_or_404(Form, slug=survey_slug)
 
     try:
         Survey.objects.get(user=request.user, form=survey_form)
@@ -89,7 +89,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
             survey.save()
 
             for question in survey_form.questions.all():
-                response = SurveyResponse(question=question, survey=survey)
+                response = Response(question=question, survey=survey)
                 response.answer = "\n".join(request.POST.getlist(str(question.pk), ""))
                 response.save()
 
@@ -120,7 +120,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
 def available_surveys_count(request: WSGIRequest) -> int:
     available_surveys = 0
 
-    for survey_form in SurveyForm.objects.available():
+    for survey_form in Form.objects.available():
         if (
             not Survey.objects.filter(user=request.user)
             .filter(form=survey_form)

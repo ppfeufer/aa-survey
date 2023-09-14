@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 
 # AA Survey
 from aa_survey.constants import INTERNAL_URL_PREFIX
-from aa_survey.managers import SurveyFormManager
+from aa_survey.managers import FormManager
 
 
 def _generate_slug(MyModel: models.Model, name: str) -> str:
@@ -61,7 +61,7 @@ class General(models.Model):
         )
 
 
-class SurveyQuestion(models.Model):
+class Question(models.Model):
     """
     Survey questions
     """
@@ -82,13 +82,13 @@ class SurveyQuestion(models.Model):
         return "Question: " + self.title
 
 
-class SurveyChoice(models.Model):
+class Choice(models.Model):
     """
     Survey choices
     """
 
     question = models.ForeignKey(
-        SurveyQuestion, on_delete=models.CASCADE, related_name="choices"
+        Question, on_delete=models.CASCADE, related_name="choices"
     )
     choice_text = models.CharField(max_length=200, verbose_name="Choice")
 
@@ -103,13 +103,13 @@ class SurveyChoice(models.Model):
         return self.choice_text
 
 
-class SurveyForm(models.Model):
+class Form(models.Model):
     """
     Survey forms
     """
 
     is_active = models.BooleanField(default=True)
-    questions = SortedManyToManyField(SurveyQuestion)
+    questions = SortedManyToManyField(Question)
     name = models.CharField(
         max_length=254,
         verbose_name="Survey Name",
@@ -130,7 +130,7 @@ class SurveyForm(models.Model):
     )
     slug = models.SlugField(max_length=254, unique=True, allow_unicode=True)
 
-    objects = SurveyFormManager()
+    objects = FormManager()
 
     class Meta:
         """
@@ -164,9 +164,7 @@ class Survey(models.Model):
     Surveys
     """
 
-    form = models.ForeignKey(
-        SurveyForm, on_delete=models.CASCADE, related_name="surveys"
-    )
+    form = models.ForeignKey(Form, on_delete=models.CASCADE, related_name="surveys")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="surveys")
     created = models.DateTimeField(auto_now_add=True)
 
@@ -202,13 +200,13 @@ class Survey(models.Model):
         return [o.character for o in self.user.character_ownerships.all()]
 
 
-class SurveyResponse(models.Model):
+class Response(models.Model):
     """
     Survey responses
     """
 
     question = models.ForeignKey(
-        SurveyQuestion, related_name="response", on_delete=models.CASCADE
+        Question, related_name="response", on_delete=models.CASCADE
     )
     survey = models.ForeignKey(
         Survey, on_delete=models.CASCADE, related_name="responses"
