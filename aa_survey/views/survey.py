@@ -99,9 +99,7 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
                 request,
                 mark_safe(
                     _(
-                        f"<h4>Success!</h4>"
-                        f"<p>Thank you for your participation in the "
-                        f'survey "{survey_form.name}"</p>'
+                        f'<h4>Success!</h4><p>Thank you for your participation in the survey "{survey_form.name}"</p>'  # pylint: disable=line-too-long
                     )
                 ),
             )

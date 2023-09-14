@@ -67,7 +67,7 @@ class SurveyQuestion(models.Model):
     """
 
     title = models.CharField(max_length=254, verbose_name="Question")
-    help_text = models.TextField(blank=True, null=True)
+    help_text = models.TextField(blank=True, default="")
     multi_select = models.BooleanField(default=False)
     mandatory = models.BooleanField(default=False)
 
@@ -112,14 +112,10 @@ class SurveyForm(models.Model):
     questions = SortedManyToManyField(SurveyQuestion)
     name = models.CharField(
         max_length=254,
-        blank=False,
-        null=False,
         verbose_name="Survey Name",
         help_text="Give your survey a good and descriptive name",
     )
     description = models.TextField(
-        blank=False,
-        null=False,
         verbose_name="Survey Description",
         help_text="Quick description what this survey is about ...",
     )
@@ -211,7 +207,9 @@ class SurveyResponse(models.Model):
     Survey responses
     """
 
-    question = models.ForeignKey(SurveyQuestion, on_delete=models.CASCADE)
+    question = models.ForeignKey(
+        SurveyQuestion, related_name="response", on_delete=models.CASCADE
+    )
     survey = models.ForeignKey(
         Survey, on_delete=models.CASCADE, related_name="responses"
     )
