@@ -2,7 +2,10 @@
 A couple of variables to use throughout the app
 """
 
-default_app_config: str = "aa_survey.apps.AaSurveyConfig"
+# Standard Library
+from importlib import metadata
 
-__version__ = "0.0.1-alpha.1"
+__version__ = metadata.version(distribution_name="aa-survey")
 __title__ = "Surveys"
+
+del metadata

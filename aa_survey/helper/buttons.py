@@ -14,7 +14,7 @@ from aa_survey.models import Form
 @login_required
 @permission_required("aa_survey.manage_survey")
 def get_survey_management_action_buttons(
-    request: WSGIRequest, survey_form: Form
+    request: WSGIRequest, survey_form: Form  # pylint: disable=unused-argument
 ) -> str:
     """
     Get the action buttons for the management dashboard view table

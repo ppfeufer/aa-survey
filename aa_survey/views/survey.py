@@ -22,12 +22,21 @@ from app_utils.logging import logger
 from aa_survey.models import Form, Response, Survey
 
 
-def check_for_main_character(user):
+def check_user_has_main_character(user):
+    """
+    Check is a user has a main character
+
+    :param user:
+    :type user:
+    :return:
+    :rtype:
+    """
+
     return bool(user.profile.main_character)
 
 
 @login_required
-@user_passes_test(check_for_main_character)
+@user_passes_test(check_user_has_main_character)
 @permission_required("aa_survey.basic_access")
 def dashboard(request: WSGIRequest) -> HttpResponse:
     """
@@ -55,7 +64,7 @@ def dashboard(request: WSGIRequest) -> HttpResponse:
 
 
 @login_required
-@user_passes_test(check_for_main_character)
+@user_passes_test(check_user_has_main_character)
 @permission_required("aa_survey.basic_access")
 def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
     """
@@ -85,11 +94,11 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
         return redirect("aa_survey:survey_dashboard")
     except Survey.DoesNotExist:
         if request.method == "POST":
-            survey = Survey(user=request.user, form=survey_form)
-            survey.save()
+            survey_taken = Survey(user=request.user, form=survey_form)
+            survey_taken.save()
 
             for question in survey_form.questions.all():
-                response = Response(question=question, survey=survey)
+                response = Response(question=question, survey=survey_taken)
                 response.answer = "\n".join(request.POST.getlist(str(question.pk), ""))
                 response.save()
 
@@ -105,19 +114,28 @@ def survey(request: WSGIRequest, survey_slug: str) -> HttpResponse:
             )
 
             return redirect("aa_survey:survey_dashboard")
-        else:
-            questions = survey_form.questions.all()
 
-            return render(
-                request,
-                "aa_survey/view/survey/survey.html",
-                context={"survey_form": survey_form, "questions": questions},
-            )
+        questions = survey_form.questions.all()
+
+        return render(
+            request,
+            "aa_survey/view/survey/survey.html",
+            context={"survey_form": survey_form, "questions": questions},
+        )
 
 
 @login_required
 @permission_required("aa_survey.basic_access")
 def available_surveys_count(request: WSGIRequest) -> int:
+    """
+    Number of surveys available to the current user
+
+    :param request:
+    :type request:
+    :return:
+    :rtype:
+    """
+
     available_surveys = 0
 
     for survey_form in Form.objects.available():
