@@ -30,7 +30,7 @@ class FormManagerBase(models.Manager):
     BoardManagerBase
     """
 
-    pass
+    pass  # pylint: disable=unnecessary-pass
 
 
 FormManager = FormManagerBase.from_queryset(FormQuerySet)

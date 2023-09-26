@@ -16,7 +16,9 @@ from aa_survey.constants import INTERNAL_URL_PREFIX
 from aa_survey.managers import FormManager
 
 
-def _generate_slug(MyModel: models.Model, name: str) -> str:
+def _generate_slug(
+    MyModel: models.Model, name: str  # pylint: disable=invalid-name
+) -> str:
     """
     Generate a valid slug and return it.
     :param MyModel:
