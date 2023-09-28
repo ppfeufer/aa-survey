@@ -39,6 +39,12 @@ dependencies = [
     "allianceauth>=2.14",
     "allianceauth-app-utils>=1.12",
 ]
+[project.optional-dependencies]
+tests-allianceauth-stable = [
+    "coverage",
+    "django-webtest",
+    "Faker",
+]
 [project.urls]
 Changelog = "https://github.com/ppfeufer/aa-survey/blob/master/CHANGELOG.md"
 "Issue / Bug Reports" = "https://github.com/ppfeufer/aa-survey/issues"
