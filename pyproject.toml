@@ -14,7 +14,7 @@ keywords = [
     "eveonline",
     "survey",
 ]
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 authors = [
     { name = "Peter Pfeufer", email = "develop@ppfeufer.de" },
 ]
@@ -32,6 +32,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
@@ -39,15 +40,13 @@ dependencies = [
     "allianceauth>=2.14",
     "allianceauth-app-utils>=1.12",
 ]
-[project.optional-dependencies]
-tests-allianceauth-stable = [
+optional-dependencies.tests-allianceauth-stable = [
     "coverage",
     "django-webtest",
-    "Faker",
+    "faker",
 ]
-[project.urls]
-Changelog = "https://github.com/ppfeufer/aa-survey/blob/master/CHANGELOG.md"
-"Issue / Bug Reports" = "https://github.com/ppfeufer/aa-survey/issues"
+urls.Changelog = "https://github.com/ppfeufer/aa-survey/blob/master/CHANGELOG.md"
+urls."Issue / Bug Reports" = "https://github.com/ppfeufer/aa-survey/issues"
 
 [tool.hatch.build]
 include = [
