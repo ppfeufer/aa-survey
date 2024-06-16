@@ -1,6 +1,5 @@
 # Standard Library
 import re
-from typing import List
 
 # Third Party
 from faker import Faker
@@ -22,7 +21,7 @@ def create_fake_user(
     corporation_ticker: str = None,
     alliance_id: int = None,
     alliance_name: str = None,
-    permissions: List[str] = None,
+    permissions: list[str] = None,
 ) -> User:
     """Create a fake user incl. main character and (optional) permissions."""
     username = re.sub(r"[^\w\d@\.\+-]", "_", character_name)
