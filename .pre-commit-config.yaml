@@ -6,6 +6,7 @@
 default_language_version:
   # force all unspecified python hooks to run python3
   python: python3
+  node: 22.4.1
 
 # https://pre-commit.ci/
 ci:
@@ -132,6 +133,7 @@ repos:
       - id: eslint
         name: ESLint
         description: Check for problems in JavaScript files.
+        language: node
         exclude: |
           (?x)(
             .min(.js|.js.map)|
@@ -139,8 +141,8 @@ repos:
           )
 #        additional_dependencies:
 #          # eslint itself needs to be here when using additional_dependencies.
-#          - eslint@9.14.0  # https://github.com/eslint/eslint/releases/latest
-#          - globals@15.12.0  # https://github.com/sindresorhus/globals/releases/latest
+#          - eslint@9.16.0  # https://github.com/eslint/eslint/releases/latest
+#          - globals@15.13.0  # https://github.com/sindresorhus/globals/releases/latest
 
   - repo: https://github.com/thibaudcolas/pre-commit-stylelint
     rev: v16.11.0
@@ -148,6 +150,7 @@ repos:
       - id: stylelint
         name: Stylelint
         description: Check for problems in CSS files.
+        language: node
         exclude: |
           (?x)(
             .min(.css|.css.map)|
@@ -157,7 +160,7 @@ repos:
           - --formatter=compact
         additional_dependencies:
           # stylelint itself needs to be here when using additional_dependencies.
-          - stylelint@16.10.0  # https://github.com/stylelint/stylelint/releases/latest
+          - stylelint@16.11.0  # https://github.com/stylelint/stylelint/releases/latest
           - stylelint-config-standard@36.0.1  # https://github.com/stylelint/stylelint-config-standard/releases/latest
 
   - repo: https://github.com/pre-commit/pygrep-hooks
