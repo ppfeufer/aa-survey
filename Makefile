@@ -4,6 +4,9 @@
 appname = aa-survey
 appname_verbose = AA Survey
 package = aa_survey
+translation_template = $(package)/locale/django.pot
+git_repository = https://github.com/ppfeufer/$(appname)
+git_repository_issues = $(git_repository)/issues
 
 # Default goal
 .DEFAULT_GOAL := help
@@ -46,6 +49,8 @@ prepare-release: graph_models translations
 	@echo "Preparing a release"
 	@read -p "New Version Number: " new_version; \
 	sed -i "/__version__/c\__version__ = \"$$new_version\"" $(package)/__init__.py; \
+	sed -i "/\"Project-Id-Version: /c\\\"Project-Id-Version: $(appname_verbose) $$new_version\\\n\"" $(translation_template); \
+	sed -i "/\"Report-Msgid-Bugs-To: /c\\\"Report-Msgid-Bugs-To: $(git_repository_issues)\\\n\"" $(translation_template); \
 	echo "Updated version in $(TEXT_BOLD)$(package)/__init__.py$(TEXT_BOLD_END)"
 
 # Help
